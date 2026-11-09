@@ -338,12 +338,13 @@
     }
     $('#chart').hidden = s !== 10;
     if (s === 10) renderChart(P);
-    $('#table-wrap').hidden = s !== 9;
-    if (s === 9) {
-      $('#c-tp').textContent = f.tp; $('#c-fn').textContent = f.fn; $('#c-fp').textContent = f.fp; $('#c-tn').textContent = f.tn;
-      $('#c-sick').textContent = f.sick; $('#c-healthy').textContent = f.healthy; $('#c-pos').textContent = f.pos; $('#c-neg').textContent = f.neg;
-      $('#f-ppv').innerHTML = f.tp + ' / ' + f.pos + ' = <span class="res">' + ppvS + '</span>';
-      $('#f-npv').innerHTML = f.tn + ' / ' + f.neg + ' = <span class="res">' + fmtPct(f.npv) + '</span>';
+    $('#table-wrap').hidden = !(s === 9 || window.matchMedia('(max-width: 1100px)').matches);
+    {
+      var P9 = params(9), f9 = figures(P9.p, P9.se, P9.sp);
+      $('#c-tp').textContent = f9.tp; $('#c-fn').textContent = f9.fn; $('#c-fp').textContent = f9.fp; $('#c-tn').textContent = f9.tn;
+      $('#c-sick').textContent = f9.sick; $('#c-healthy').textContent = f9.healthy; $('#c-pos').textContent = f9.pos; $('#c-neg').textContent = f9.neg;
+      $('#f-ppv').innerHTML = f9.tp + ' / ' + f9.pos + ' = <span class="res">' + fmtPct(f9.ppv) + '</span>';
+      $('#f-npv').innerHTML = f9.tn + ' / ' + f9.neg + ' = <span class="res">' + fmtPct(f9.npv) + '</span>';
     }
   }
 
@@ -445,6 +446,14 @@
     });
   }
 
+  /* On small screens the 2x2 table lives in the text of step 9, not in the pinned picture */
+  var smallMq = window.matchMedia('(max-width: 1100px)');
+  function placeTable() {
+    var tw = $('#table-wrap');
+    if (smallMq.matches) $('#s9 .step-inner').insertBefore(tw, $('#s9 .next-link'));
+    else $('#picture').insertBefore(tw, $('#legend'));
+  }
   for (var i = 0; i < 100; i++) people.push(makePerson());
-  bind(); applyLang(); render(); observe();
+  bind(); placeTable(); applyLang(); render(); observe();
+  if (smallMq.addEventListener) smallMq.addEventListener('change', function () { placeTable(); render(); });
 })();
