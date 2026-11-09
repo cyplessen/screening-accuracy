@@ -514,7 +514,12 @@
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); jump(1); }
       if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jump(-1); }
     });
-    $$('.lang-btn').forEach(function (b) { b.addEventListener('click', function () { state.lang = b.dataset.lang; applyLang(); render(); }); });
+    $$('.lang-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.lang = b.dataset.lang; applyLang(); render();
+        try { window.history.replaceState(null, '', window.location.pathname + '?lang=' + state.lang + window.location.hash); } catch (e) { /* file:// in some browsers */ }
+      });
+    });
     $$('.guess').forEach(function (box) {
       var forStep = box.dataset.for, sl = box.querySelector('.sl-guess'), btn = box.querySelector('.btn-reveal');
       sl.addEventListener('input', function () { if (forStep === '5') { state.guess5 = Number(this.value); state.guessed5 = true; } else state.guess11 = Number(this.value); render(); });
@@ -549,6 +554,11 @@
     if (smallMq.matches) $('#s9 .step-inner').insertBefore(tw, $('#s9 .next-link'));
     else $('#picture').insertBefore(tw, $('#legend'));
   }
+  /* language from the address: ?lang=de or ?lang=en (default: English) */
+  try {
+    var qLang = new URLSearchParams(window.location.search).get('lang');
+    if (qLang === 'de' || qLang === 'en') state.lang = qLang;
+  } catch (e) { /* older browsers: keep the default */ }
   for (var i = 0; i < 100; i++) people.push(makePerson());
   bind(); placeTable(); applyLang(); render(); observe();
   if (smallMq.addEventListener) smallMq.addEventListener('change', function () { placeTable(); render(); });
