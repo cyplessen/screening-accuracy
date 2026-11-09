@@ -508,11 +508,34 @@
       $('#s' + n + ' .step-inner').appendChild(a);
     }
     window.addEventListener('wheel', onWheel, { passive: false });
+    /* Keyboard and presentation remotes: one section per key press.
+       Remotes send either PageDown / PageUp or ArrowRight / ArrowLeft, depending on the model. */
     document.addEventListener('keydown', function (e) {
-      var tag = e.target.tagName;
-      if (tag === 'INPUT' || tag === 'BUTTON' || tag === 'A' || tag === 'TEXTAREA') return;
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); jump(1); }
-      if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jump(-1); }
+      if (e.metaKey || e.ctrlKey || e.altKey) return;            // leave browser shortcuts alone
+      var k = e.key, tag = e.target.tagName;
+      var fwd = k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown' || (k === ' ' && !e.shiftKey);
+      var back = k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp' || (k === ' ' && e.shiftKey);
+      if (!fwd && !back) return;
+      if (tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (tag === 'INPUT' && k !== 'PageDown' && k !== 'PageUp') return;   // arrows keep moving a focused slider
+      if ((tag === 'BUTTON' || tag === 'A') && k === ' ') return;          // space keeps pressing a focused button
+      e.preventDefault();
+      jump(fwd ? 1 : -1);
+    });
+    /* After a mouse or touch interaction, give the focus back to the page,
+       so the next key press turns the page instead of moving a slider or pressing a button again.
+       Controls reached with the Tab key keep their focus. */
+    var usedRange = null;
+    document.addEventListener('pointerdown', function (e) {
+      usedRange = e.target && e.target.tagName === 'INPUT' ? e.target : null;
+    });
+    function releaseRange() { var el = usedRange; usedRange = null; if (el) setTimeout(function () { el.blur(); }, 0); }
+    window.addEventListener('pointerup', releaseRange);
+    window.addEventListener('pointercancel', releaseRange);
+    document.addEventListener('click', function (e) {
+      if (!e.detail) return;                                     // keyboard activation: keep the focus
+      var el = e.target.closest ? e.target.closest('button, a') : null;
+      if (el) el.blur();
     });
     $$('.lang-btn').forEach(function (b) {
       b.addEventListener('click', function () {
