@@ -191,9 +191,29 @@ input[type="range"]:disabled { opacity: .3; cursor: default; }
 .cell-name { display: block; font-size: .72rem; color: var(--muted); }
 .formulas p { margin: 0 0 .6rem; font-size: .95rem; }
 .formulas .res { font-weight: 700; font-size: 1.3em; }
+.formulas .approx { color: var(--muted); font-size: .9em; white-space: nowrap; }
 
 .foot { margin-top: 2rem; padding-top: .6rem; border-top: 1px solid var(--rule-soft); color: var(--muted); font-size: .72rem; }
 .foot p { margin: 0; }
+
+/* ---------- Appendix: formulas ---------- */
+.appendix { border-top: 2px solid var(--rule); padding: 2.5rem 0 2rem; scroll-snap-align: start; }
+.apx-intro { font-size: 1.08rem; max-width: 46rem; margin: 0 0 1.6rem; }
+.apx-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 3rem; }
+.apx-block { border-top: 1.5px solid var(--rule); padding: .8rem 0 1.4rem; min-width: 0; }
+.apx-block.wide { grid-column: 1 / -1; }
+.apx-block h3 { margin: 0 0 .7rem; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.eq { margin: 0 0 .75rem; font-size: 1.05rem; display: flex; align-items: center; flex-wrap: wrap; gap: .15rem .45rem; font-variant-numeric: tabular-nums; overflow-x: auto; }
+.eq .lhs { font-weight: 700; }
+.eq .say { color: var(--muted); font-size: .9rem; flex-basis: 100%; }
+.frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.25; }
+.frac > span { padding: 0 .35rem; white-space: nowrap; }
+.frac > span:first-child { border-bottom: 1.5px solid var(--ink); }
+.apx-defs { display: grid; grid-template-columns: auto 1fr; gap: .3rem 1rem; margin: 0; font-size: 1rem; }
+.apx-defs dt { font-weight: 700; white-space: nowrap; }
+.apx-defs dd { margin: 0; }
+.apx-note { margin: .2rem 0 0; font-size: .92rem; color: var(--muted); max-width: 46rem; }
+.pos-c { color: var(--pos); } .neg-c { color: var(--neg); }
 
 /* ---------- Small screens: picture band on top, text below it ---------- */
 @media (max-width: 1100px) {
@@ -221,6 +241,9 @@ input[type="range"]:disabled { opacity: .3; cursor: default; }
   .chart-read { font-size: .85rem; margin-top: .3rem; }
   .table-wrap { grid-template-columns: 1fr; gap: .8rem; margin-top: 1rem; }
   .hero-inner { padding: 2rem 0; }
+  .apx-grid { grid-template-columns: 1fr; }
+  .appendix { padding-top: 1.6rem; }
+  .eq { font-size: .98rem; }
 }
 @media (max-width: 700px) {
   html { font-size: 16px; }

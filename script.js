@@ -20,6 +20,27 @@
       heroJourney: 'First the argument, in eight short steps with 100 people and one test. Then a playground, the full curves, and a game in which you guess the answer for six situations.',
       heroStart: 'Read the argument', heroGame: 'Jump to the game', heroHint: 'or just scroll',
       navArg: 'The argument', navPlay: 'Playground', navCurve: 'The curves', navGame: 'Game',
+      navApx: 'Formulas', apxLabel: 'Appendix', apxTitle: 'All formulas',
+      apxIntro: 'Everything on this page follows from three inputs: the prevalence, the sensitivity and the specificity. The four cells of the 2×2 table are computed from them, and every other quantity is a ratio of cells.',
+      decimal: '.',
+      apx: {
+        symTP: 'TP', symTN: 'TN',
+        notation: 'Notation',
+        defs: [['N', 'number of people tested, here 100'], ['p', 'prevalence: share of the tested group who have the condition'], ['Se', 'sensitivity'], ['Sp', 'specificity'],
+          ['TP', 'true positives: have the condition, test positive'], ['FN', 'false negatives: have the condition, test negative'],
+          ['FP', 'false positives: do not have the condition, test positive'], ['TN', 'true negatives: do not have the condition, test negative']],
+        cells: 'From the three inputs to the four cells', withC: 'with the condition', withoutC: 'without the condition',
+        props: 'Properties of the test', sens: 'Sensitivity', spec: 'Specificity', fpr: 'False-positive rate', fnr: 'False-negative rate', prev: 'Prevalence',
+        propsNote: 'Sensitivity and specificity are computed within one row of the table each. They do not depend on the prevalence.',
+        pv: 'Predictive values', ppv: 'Positive predictive value', npv: 'Negative predictive value',
+        pvNote: 'Predictive values are computed within one column of the table each. The second form is Bayes’ theorem, and it shows why they depend on the prevalence p.',
+        odds: 'The same with odds and likelihood ratios', lrp: 'Positive likelihood ratio', lrn: 'Negative likelihood ratio',
+        pre: 'Pre-test odds', post: 'Post-test odds', back: 'Back to a probability', preW: 'pre-test odds', postW: 'post-test odds', oddsW: 'odds',
+        oddsNote: 'With LR+ the result is the PPV. With LR− the result is 1 − NPV, the chance of having the condition despite a negative result.',
+        example: 'Worked example: PHQ-9 in the general population', exGiven: 'Given',
+        rounding: 'Rounding in the pictures',
+        roundingText: function (a, b) { return 'The pictures and sentences show whole people: within each group the cells are rounded to whole numbers, so the people add up to 100 and the number with the condition equals the prevalence. Every percentage on this page is calculated with the exact formulas above, not from the rounded people. A percentage can therefore differ slightly from the ratio of the people shown: ' + a + ', while the exact value is ' + b + '.'; }
+      },
       reveal: 'Show me', check: 'Check', again: 'Play again', nextRound: 'Next round', finish: 'See result', cont: 'Continue',
       zone1: 'hardly any', zone2: 'a third', zone3: 'two thirds', zone4: 'nearly all',
       setting: 'Setting', test: 'Test', population: 'General population', gp: 'GP practice', practice: 'Psychotherapy practice',
@@ -32,14 +53,14 @@
       legSick: 'has depression', legHealthy: 'does not', legPlus: 'tests positive', legMinus: 'tests negative', rounded: 'whole people, rounded',
       secArg: 'The argument', secPlay: 'Playground', secCurve: 'The whole picture', secGame: 'Game',
       capPeople: 'people', capSick: 'have depression', capHealthy: 'do not', capPlus: 'test positive', capMinus: 'test negative',
-      ofPlus: function (tp, pos) { return tp + ' of ' + pos + ' positive results are real'; },
+      approxW: 'about', ofPlus: function (tp, pos) { return 'About ' + tp + ' of ' + pos + ' positive results are real'; },
       noPos: 'nobody tests positive', noNeg: 'nobody tests negative',
-      npvRead: function (npv, tn, neg) { return 'A negative result is right ' + npv + ' of the time (' + tn + ' of ' + neg + ').'; },
+      npvRead: function (npv) { return 'A negative result is right ' + npv + ' of the time.'; },
       guessQ: 'Your estimate: how many of the positive results are real?',
       fbClose: function (a) { return 'True PPV ' + a + '. You were close.'; },
       fbOff: function (a, g, d, over) { return 'True PPV ' + a + '. You said ' + g + ' – ' + d + ' points too ' + (over ? 'high' : 'low') + '.'; },
       pct: '%', picPos: function (s) { return 'Step ' + s + ' of ' + N; },
-      footer: 'Test properties: PHQ-9, cut-off 10 – Levis, Benedetti &amp; Thombs (2019), <em>BMJ</em>, 365, l1476. Two-question test – Whooley et al. (1997), <em>J Gen Intern Med</em>, 12, 439–445. The “excellent test” and all prevalences are illustrative. Figures are rounded to whole people; the curves use the exact formulas.',
+      footer: 'Test properties: PHQ-9, cut-off 10 – Levis, Benedetti &amp; Thombs (2019), <em>BMJ</em>, 365, l1476. Two-question test – Whooley et al. (1997), <em>J Gen Intern Med</em>, 12, 439–445. The “excellent test” and all prevalences are illustrative. People are shown as whole figures; all percentages are calculated with the exact formulas.',
       steps: [
         { h: '100 people come for a depression screening.',
           b: '<p>A screening test is a short questionnaire. It does not diagnose anyone. It sorts people into two groups: those who <b>test positive</b> and those who <b>test negative</b>.</p><p>The question of this page: when someone tests positive, what does that actually tell us?</p>' },
@@ -54,18 +75,18 @@
           t: '<b>Specificity</b>Of all people without the condition, the share the test clears with a negative result.' },
         { h: 'Now look only at the positive results.',
           b: function (f) { return '<p>' + f.pos + ' people test positive. Some have depression, some do not, and from the outside they look the same.</p><p>Before you see it: how many of the ' + f.pos + ' actually have depression?</p>'; },
-          hr: function (f) { return f.tp + ' of the ' + f.pos + ' who tested positive actually have depression.'; },
+          hr: function (f) { return 'About ' + f.tp + ' of the ' + f.pos + ' who tested positive actually have depression.'; },
           br: function (f, ppv) { return '<p>That is the <b>positive predictive value</b>, PPV: ' + ppv + '. Most positive results are false alarms – with a test that catches 88% of cases.</p><p>Sensitivity and specificity describe the test. The PPV describes what a result means for the person holding it. They are not the same thing.</p>'; },
           t: '<b>Positive predictive value (PPV)</b>Of all people who test positive, the share who really have the condition. This is the number a patient and a clinician actually need.' },
         { h: 'Same test, different waiting room.',
-          b: function (f, ppv) { return '<p>In a psychotherapy practice, every second person has depression: prevalence 50%. The PHQ-9 has not changed.</p><p>Now ' + f.tp + ' of the ' + f.pos + ' positive results are real. <b>PPV ' + ppv + '.</b> The same positive result that was mostly noise in the general population is now mostly signal.</p><p>Nothing about the test changed. Only the prevalence.</p>'; } },
+          b: function (f, ppv) { return '<p>In a psychotherapy practice, every second person has depression: prevalence 50%. The PHQ-9 has not changed.</p><p>Now about ' + f.tp + ' of the ' + f.pos + ' positive results are real. <b>PPV ' + ppv + '.</b> The same positive result that was mostly noise in the general population is now mostly signal.</p><p>Nothing about the test changed. Only the prevalence.</p>'; } },
         { h: 'Weak test, routine screening.',
-          b: function (f, ppv) { return '<p>The two-question test is popular because it is quick. It catches 96% of cases – but it also gives a positive result to 43% of the healthy.</p><p>Used routinely in the general population: ' + f.tp + ' real cases and ' + f.fp + ' false alarms. <b>PPV ' + ppv + '.</b> Roughly ' + Math.round(f.fp / f.tp) + ' of every ' + (Math.round(f.fp / f.tp) + 1) + ' positive results are wrong.</p><p>This is what routine screening with a weak tool produces: mostly type I errors. A positive result then means almost nothing, and everyone who receives one is worried, re-tested or treated for no reason.</p>'; } },
+          b: function (f, ppv) { return '<p>The two-question test is popular because it is quick. It catches 96% of cases – but it also gives a positive result to 43% of the healthy.</p><p>Used routinely in the general population: about ' + f.tp + ' real cases and ' + f.fp + ' false alarms. <b>PPV ' + ppv + '.</b> Roughly ' + Math.round(f.fp / f.tp) + ' of every ' + (Math.round(f.fp / f.tp) + 1) + ' positive results are wrong.</p><p>This is what routine screening with a weak tool produces: mostly type I errors. A positive result then means almost nothing, and everyone who receives one is worried, re-tested or treated for no reason.</p>'; } },
         { h: 'Two things decide what a positive result is worth.',
-          b: '<div class="takeaways"><div class="takeaway"><b>1. A good estimate of the prevalence.</b>Without knowing how common the condition is in your setting, a positive result cannot be interpreted. The same result from the same test meant 85% in one room and 17% in another.</div><div class="takeaway"><b>2. A test with known measurement properties.</b>Sensitivity and specificity have to be measured and published. A positive result from a test with unknown properties is a number without meaning – and a weak test in a low-prevalence group produces mostly false alarms.</div></div>' },
+          b: function () { return '<div class="takeaways"><div class="takeaway"><b>1. A good estimate of the prevalence.</b>Without knowing how common the condition is in your setting, a positive result cannot be interpreted. The same positive result from the same PHQ-9 meant ' + fmtPct(figures(50, 88, 85).ppv) + ' in one room and ' + fmtPct(figures(8, 88, 85).ppv) + ' in another.</div><div class="takeaway"><b>2. A test with known measurement properties.</b>Sensitivity and specificity have to be measured and published. A positive result from a test with unknown properties is a number without meaning – and a weak test in a low-prevalence group produces mostly false alarms: ' + fmtPct(figures(8, 96, 57).ppv) + ' with the two-question test.</div></div>'; } },
         { h: 'Try it yourself.', b: '<p>Move prevalence, sensitivity and specificity. The picture and the table update live. Try a weak test at 8%, then the same test at 50%.</p>' },
         { h: 'The whole picture: PPV and NPV across prevalence.',
-          b: '<p>The solid line is the <b>PPV</b>: what a positive result is worth. It climbs steeply at low prevalence – a few percentage points of prevalence change everything there – and flattens out above 30%.</p><p>The dashed line is the <b>NPV</b>, the negative predictive value: what a negative result is worth. At low prevalence it sits near 100%. A negative result is very reassuring exactly where a positive one is nearly worthless.</p><p>Move the prevalence or switch the test to see both values at once.</p>' },
+          b: '<p>The solid line is the <b>PPV</b>: what a positive result is worth. It climbs steeply at low prevalence – a few percentage points of prevalence change everything there – and rises more slowly above 30%.</p><p>The dashed line is the <b>NPV</b>, the negative predictive value: what a negative result is worth. At low prevalence it sits near 100%. A negative result is very reassuring exactly where a positive one is nearly worthless.</p><p>Move the prevalence or switch the test to see both values at once.</p>' },
         { h: 'Guess the PPV.', b: '<p>Six situations. You see the setting and the test. Estimate how many of the positive results are real, then check.</p>' }
       ],
       tiles: [['PHQ-9 at 8%', 'general population'], ['PHQ-9 at 50%', 'psychotherapy practice'], ['Two-question test at 8%', 'general population']],
@@ -82,6 +103,27 @@
       heroJourney: 'Zuerst das Argument, in acht kurzen Schritten mit 100 Menschen und einem Test. Dann eine Spielwiese, die vollständigen Kurven und ein Spiel, in dem Sie die Antwort für sechs Situationen schätzen.',
       heroStart: 'Zum Argument', heroGame: 'Direkt zum Spiel', heroHint: 'oder einfach scrollen',
       navArg: 'Das Argument', navPlay: 'Spielwiese', navCurve: 'Die Kurven', navGame: 'Spiel',
+      navApx: 'Formeln', apxLabel: 'Anhang', apxTitle: 'Alle Formeln',
+      apxIntro: 'Alles auf dieser Seite folgt aus drei Eingaben: der Prävalenz, der Sensitivität und der Spezifität. Daraus werden die vier Felder der Vierfeldertafel berechnet, und jede weitere Größe ist ein Verhältnis von Feldern.',
+      decimal: ',',
+      apx: {
+        symTP: 'RP', symTN: 'RN',
+        notation: 'Notation',
+        defs: [['N', 'Anzahl getesteter Personen, hier 100'], ['p', 'Prävalenz: Anteil der getesteten Gruppe mit der Störung'], ['Se', 'Sensitivität'], ['Sp', 'Spezifität'],
+          ['RP', 'richtig Positive: haben die Störung, testen positiv'], ['FN', 'falsch Negative: haben die Störung, testen negativ'],
+          ['FP', 'falsch Positive: haben die Störung nicht, testen positiv'], ['RN', 'richtig Negative: haben die Störung nicht, testen negativ']],
+        cells: 'Von den drei Eingaben zu den vier Feldern', withC: 'mit der Störung', withoutC: 'ohne die Störung',
+        props: 'Eigenschaften des Tests', sens: 'Sensitivität', spec: 'Spezifität', fpr: 'Falsch-positiv-Rate', fnr: 'Falsch-negativ-Rate', prev: 'Prävalenz',
+        propsNote: 'Sensitivität und Spezifität werden jeweils innerhalb einer Zeile der Tafel berechnet. Sie hängen nicht von der Prävalenz ab.',
+        pv: 'Prädiktive Werte', ppv: 'Positiver prädiktiver Wert', npv: 'Negativer prädiktiver Wert',
+        pvNote: 'Prädiktive Werte werden jeweils innerhalb einer Spalte der Tafel berechnet. Die zweite Form ist der Satz von Bayes; sie zeigt, warum sie von der Prävalenz p abhängen.',
+        odds: 'Dasselbe mit Odds und Likelihood-Quotienten', lrp: 'Positiver Likelihood-Quotient', lrn: 'Negativer Likelihood-Quotient',
+        pre: 'Prätest-Odds', post: 'Posttest-Odds', back: 'Zurück zur Wahrscheinlichkeit', preW: 'Prätest-Odds', postW: 'Posttest-Odds', oddsW: 'Odds',
+        oddsNote: 'Mit LR+ ergibt sich der PPV. Mit LR− ergibt sich 1 − NPV, die Wahrscheinlichkeit, die Störung trotz negativem Ergebnis zu haben.',
+        example: 'Rechenbeispiel: PHQ-9 in der Allgemeinbevölkerung', exGiven: 'Gegeben',
+        rounding: 'Rundung in den Bildern',
+        roundingText: function (a, b) { return 'Bilder und Sätze zeigen ganze Personen: Innerhalb jeder Gruppe werden die Felder auf ganze Zahlen gerundet, sodass die Summe 100 ergibt und die Zahl der Erkrankten der Prävalenz entspricht. Jeder Prozentwert auf dieser Seite ist mit den exakten Formeln oben berechnet, nicht aus den gerundeten Personen. Ein Prozentwert kann deshalb leicht vom Verhältnis der gezeigten Personen abweichen: ' + a + ', exakt sind es ' + b + '.'; }
+      },
       reveal: 'Zeigen', check: 'Prüfen', again: 'Nochmal spielen', nextRound: 'Nächste Runde', finish: 'Ergebnis', cont: 'Weiter',
       zone1: 'kaum jemand', zone2: 'ein Drittel', zone3: 'zwei Drittel', zone4: 'fast alle',
       setting: 'Setting', test: 'Test', population: 'Allgemeinbevölkerung', gp: 'Hausärztliche Praxis', practice: 'Psychotherapiepraxis',
@@ -94,14 +136,14 @@
       legSick: 'hat eine Depression', legHealthy: 'hat keine', legPlus: 'Test positiv', legMinus: 'Test negativ', rounded: 'ganze Personen, gerundet',
       secArg: 'Das Argument', secPlay: 'Spielwiese', secCurve: 'Das ganze Bild', secGame: 'Spiel',
       capPeople: 'Personen', capSick: 'haben eine Depression', capHealthy: 'haben keine', capPlus: 'Test positiv', capMinus: 'Test negativ',
-      ofPlus: function (tp, pos) { return tp + ' von ' + pos + ' positiven Ergebnissen sind echt'; },
+      approxW: 'etwa', ofPlus: function (tp, pos) { return 'Etwa ' + tp + ' von ' + pos + ' positiven Ergebnissen sind echt'; },
       noPos: 'niemand testet positiv', noNeg: 'niemand testet negativ',
-      npvRead: function (npv, tn, neg) { return 'Ein negatives Ergebnis stimmt in ' + npv + ' der Fälle (' + tn + ' von ' + neg + ').'; },
+      npvRead: function (npv) { return 'Ein negatives Ergebnis stimmt in ' + npv + ' der Fälle.'; },
       guessQ: 'Ihre Schätzung: Wie viele der positiven Ergebnisse sind echt?',
       fbClose: function (a) { return 'Tatsächlicher PPV ' + a + '. Nah dran.'; },
       fbOff: function (a, g, d, over) { return 'Tatsächlicher PPV ' + a + '. Sie haben ' + g + ' gesagt – ' + d + ' Punkte zu ' + (over ? 'hoch' : 'niedrig') + '.'; },
       pct: NNBSP + '%', picPos: function (s) { return 'Schritt ' + s + ' von ' + N; },
-      footer: 'Testkennwerte: PHQ-9, Cut-off 10 – Levis, Benedetti &amp; Thombs (2019), <em>BMJ</em>, 365, l1476. Zwei-Fragen-Test – Whooley et al. (1997), <em>J Gen Intern Med</em>, 12, 439–445. „Exzellenter Test“ und alle Prävalenzen sind Beispielwerte. Figuren auf ganze Personen gerundet; die Kurven nutzen die exakten Formeln.',
+      footer: 'Testkennwerte: PHQ-9, Cut-off 10 – Levis, Benedetti &amp; Thombs (2019), <em>BMJ</em>, 365, l1476. Zwei-Fragen-Test – Whooley et al. (1997), <em>J Gen Intern Med</em>, 12, 439–445. „Exzellenter Test“ und alle Prävalenzen sind Beispielwerte. Personen werden als ganze Figuren gezeigt; alle Prozentwerte sind mit den exakten Formeln berechnet.',
       steps: [
         { h: '100 Menschen kommen zum Depressions-Screening.',
           b: '<p>Ein Screening-Test ist ein kurzer Fragebogen. Er stellt keine Diagnose. Er sortiert Menschen in zwei Gruppen: die mit <b>positivem</b> und die mit <b>negativem</b> Testergebnis.</p><p>Die Frage dieser Seite: Wenn jemand positiv testet – was sagt uns das eigentlich?</p>' },
@@ -116,18 +158,18 @@
           t: '<b>Spezifität</b>Von allen Menschen ohne die Störung der Anteil, den der Test mit einem negativen Ergebnis entlastet.' },
         { h: 'Jetzt nur die positiven Ergebnisse.',
           b: function (f) { return '<p>' + f.pos + ' Menschen testen positiv. Manche haben eine Depression, manche nicht – von außen sehen sie gleich aus.</p><p>Bevor Sie es sehen: Wie viele der ' + f.pos + ' haben tatsächlich eine Depression?</p>'; },
-          hr: function (f) { return f.tp + ' der ' + f.pos + ' mit positivem Ergebnis haben tatsächlich eine Depression.'; },
+          hr: function (f) { return 'Etwa ' + f.tp + ' der ' + f.pos + ' mit positivem Ergebnis haben tatsächlich eine Depression.'; },
           br: function (f, ppv) { return '<p>Das ist der <b>positive prädiktive Wert</b>, PPV: ' + ppv + '. Die meisten positiven Ergebnisse sind Fehlalarme – bei einem Test, der 88 % der Fälle findet.</p><p>Sensitivität und Spezifität beschreiben den Test. Der PPV beschreibt, was ein Ergebnis für die Person bedeutet, die es in der Hand hält. Das ist nicht dasselbe.</p>'; },
           t: '<b>Positiver prädiktiver Wert (PPV)</b>Von allen Menschen mit positivem Ergebnis der Anteil, der die Störung wirklich hat. Die Zahl, die Patient:innen und Behandler:innen tatsächlich brauchen.' },
         { h: 'Gleicher Test, anderes Wartezimmer.',
-          b: function (f, ppv) { return '<p>In einer Psychotherapiepraxis hat jede:r Zweite eine Depression: Prävalenz 50 %. Der PHQ-9 ist derselbe.</p><p>Jetzt sind ' + f.tp + ' der ' + f.pos + ' positiven Ergebnisse echt. <b>PPV ' + ppv + '.</b> Dasselbe positive Ergebnis, das in der Allgemeinbevölkerung vor allem Rauschen war, ist hier vor allem Signal.</p><p>Am Test hat sich nichts geändert. Nur die Prävalenz.</p>'; } },
+          b: function (f, ppv) { return '<p>In einer Psychotherapiepraxis hat jede:r Zweite eine Depression: Prävalenz 50 %. Der PHQ-9 ist derselbe.</p><p>Jetzt sind etwa ' + f.tp + ' der ' + f.pos + ' positiven Ergebnisse echt. <b>PPV ' + ppv + '.</b> Dasselbe positive Ergebnis, das in der Allgemeinbevölkerung vor allem Rauschen war, ist hier vor allem Signal.</p><p>Am Test hat sich nichts geändert. Nur die Prävalenz.</p>'; } },
         { h: 'Schwacher Test, Routine-Screening.',
-          b: function (f, ppv) { return '<p>Der Zwei-Fragen-Test ist beliebt, weil er schnell geht. Er findet 96 % der Fälle – lässt aber auch 43 % der Gesunden positiv testen.</p><p>Routinemäßig in der Allgemeinbevölkerung eingesetzt: ' + f.tp + ' echte Fälle und ' + f.fp + ' Fehlalarme. <b>PPV ' + ppv + '.</b> Etwa ' + Math.round(f.fp / f.tp) + ' von ' + (Math.round(f.fp / f.tp) + 1) + ' positiven Ergebnissen sind falsch.</p><p>Das produziert Routine-Screening mit einem schwachen Instrument: vor allem Fehler erster Art. Ein positives Ergebnis bedeutet dann fast nichts – und alle, die eines bekommen, werden umsonst beunruhigt, nachgetestet oder behandelt.</p>'; } },
+          b: function (f, ppv) { return '<p>Der Zwei-Fragen-Test ist beliebt, weil er schnell geht. Er findet 96 % der Fälle – lässt aber auch 43 % der Gesunden positiv testen.</p><p>Routinemäßig in der Allgemeinbevölkerung eingesetzt: etwa ' + f.tp + ' echte Fälle und ' + f.fp + ' Fehlalarme. <b>PPV ' + ppv + '.</b> Etwa ' + Math.round(f.fp / f.tp) + ' von ' + (Math.round(f.fp / f.tp) + 1) + ' positiven Ergebnissen sind falsch.</p><p>Das produziert Routine-Screening mit einem schwachen Instrument: vor allem Fehler erster Art. Ein positives Ergebnis bedeutet dann fast nichts – und alle, die eines bekommen, werden umsonst beunruhigt, nachgetestet oder behandelt.</p>'; } },
         { h: 'Zwei Dinge entscheiden, was ein positives Ergebnis bedeutet.',
-          b: '<div class="takeaways"><div class="takeaway"><b>1. Eine gute Schätzung der Prävalenz.</b>Ohne zu wissen, wie häufig die Störung im eigenen Setting ist, lässt sich ein positives Ergebnis nicht deuten. Dasselbe Ergebnis desselben Tests bedeutete 85 % im einen Raum und 17 % im anderen.</div><div class="takeaway"><b>2. Ein Test mit bekannten Gütekriterien.</b>Sensitivität und Spezifität müssen gemessen und publiziert sein. Ein positives Ergebnis aus einem Test mit unbekannten Eigenschaften ist eine Zahl ohne Bedeutung – und ein schwacher Test in einer Gruppe mit niedriger Prävalenz produziert vor allem Fehlalarme.</div></div>' },
+          b: function () { return '<div class="takeaways"><div class="takeaway"><b>1. Eine gute Schätzung der Prävalenz.</b>Ohne zu wissen, wie häufig die Störung im eigenen Setting ist, lässt sich ein positives Ergebnis nicht deuten. Dasselbe positive Ergebnis desselben PHQ-9 bedeutete ' + fmtPct(figures(50, 88, 85).ppv) + ' im einen Raum und ' + fmtPct(figures(8, 88, 85).ppv) + ' im anderen.</div><div class="takeaway"><b>2. Ein Test mit bekannten Gütekriterien.</b>Sensitivität und Spezifität müssen gemessen und publiziert sein. Ein positives Ergebnis aus einem Test mit unbekannten Eigenschaften ist eine Zahl ohne Bedeutung – und ein schwacher Test in einer Gruppe mit niedriger Prävalenz produziert vor allem Fehlalarme: ' + fmtPct(figures(8, 96, 57).ppv) + ' beim Zwei-Fragen-Test.</div></div>'; } },
         { h: 'Probieren Sie es aus.', b: '<p>Prävalenz, Sensitivität und Spezifität verschieben – Bild und Tafel aktualisieren sich live. Probieren Sie einen schwachen Test bei 8 %, dann denselben Test bei 50 %.</p>' },
         { h: 'Das ganze Bild: PPV und NPV über die Prävalenz.',
-          b: '<p>Die durchgezogene Linie ist der <b>PPV</b>: die Aussagekraft eines positiven Ergebnisses. Er steigt bei niedriger Prävalenz steil an – dort verändern wenige Prozentpunkte Prävalenz alles – und flacht oberhalb von 30 % ab.</p><p>Die gestrichelte Linie ist der <b>NPV</b>, der negative prädiktive Wert: die Aussagekraft eines negativen Ergebnisses. Bei niedriger Prävalenz liegt er nahe 100 %. Ein negatives Ergebnis ist genau dort sehr beruhigend, wo ein positives fast nichts aussagt.</p><p>Prävalenz verschieben oder Test wechseln, um beide Werte zugleich zu sehen.</p>' },
+          b: '<p>Die durchgezogene Linie ist der <b>PPV</b>: die Aussagekraft eines positiven Ergebnisses. Er steigt bei niedriger Prävalenz steil an – dort verändern wenige Prozentpunkte Prävalenz alles – und steigt oberhalb von 30 % langsamer.</p><p>Die gestrichelte Linie ist der <b>NPV</b>, der negative prädiktive Wert: die Aussagekraft eines negativen Ergebnisses. Bei niedriger Prävalenz liegt er nahe 100 %. Ein negatives Ergebnis ist genau dort sehr beruhigend, wo ein positives fast nichts aussagt.</p><p>Prävalenz verschieben oder Test wechseln, um beide Werte zugleich zu sehen.</p>' },
         { h: 'PPV schätzen.', b: '<p>Sechs Situationen. Setting und Test sind bekannt. Schätzen, wie viele der positiven Ergebnisse echt sind, dann prüfen.</p>' }
       ],
       tiles: [['PHQ-9 bei 8 %', 'Allgemeinbevölkerung'], ['PHQ-9 bei 50 %', 'Psychotherapiepraxis'], ['Zwei-Fragen-Test bei 8 %', 'Allgemeinbevölkerung']],
@@ -144,18 +186,25 @@
   var slow = false;
   function t(k) { return I18N[state.lang][k]; }
   function pctInt(x) { return x + t('pct'); }
-  function fmtPct(x) { return isNaN(x) ? '–' : Math.round(x) + t('pct'); }
+  function fmtPct(x) {
+    if (isNaN(x)) return '–';
+    if (x > 0 && x < 0.1) return '< 0' + t('decimal') + '1' + t('pct');
+    // one decimal where rounding to a whole number would read as 0 or 100
+    var one = (x > 99.5 && x < 100) || (x > 0 && x < 0.5);
+    return (one ? (Math.floor(x * 10) / 10).toFixed(1).replace('.', t('decimal')) : String(Math.round(x))) + t('pct');
+  }
 
   /* ---------- numbers ---------- */
   function figures(p, se, sp) {
-    var sick = p, healthy = 100 - p;
-    var ex = { tp: sick * se / 100, fn: sick * (1 - se / 100), tn: healthy * sp / 100, fp: healthy * (1 - sp / 100) };
-    var parts = ['tp', 'fp', 'fn', 'tn'].map(function (k) { return { k: k, v: ex[k], f: Math.floor(ex[k] + 1e-9), rem: ex[k] - Math.floor(ex[k] + 1e-9) }; });
-    var total = parts.reduce(function (a, q) { return a + q.f; }, 0);
-    parts.slice().sort(function (a, b) { return b.rem - a.rem; }).slice(0, 100 - total).forEach(function (q) { q.f += 1; });
-    var f = {}; parts.forEach(function (q) { f[q.k] = q.f; });
-    f.sick = f.tp + f.fn; f.healthy = f.fp + f.tn; f.pos = f.tp + f.fp; f.neg = f.fn + f.tn;
-    f.ppv = f.pos ? f.tp / f.pos * 100 : NaN; f.npv = f.neg ? f.tn / f.neg * 100 : NaN;
+    // Whole people: rounded within each group, in integer arithmetic (ties round up),
+    // so the number with the condition always equals the prevalence.
+    var tp = Math.floor((p * se + 50) / 100), fn = p - tp;
+    var tn = Math.floor(((100 - p) * sp + 50) / 100), fp = (100 - p) - tn;
+    var f = { tp: tp, fn: fn, tn: tn, fp: fp, sick: p, healthy: 100 - p, pos: tp + fp, neg: fn + tn };
+    // Percentages: always from the exact formulas, never from the rounded people.
+    var dp = p * se + (100 - p) * (100 - sp), dn = (100 - p) * sp + p * (100 - se);
+    f.ppv = dp > 0 ? 100 * p * se / dp : NaN;
+    f.npv = dn > 0 ? 100 * (100 - p) * sp / dn : NaN;
     return f;
   }
   function ppvAt(p, se, sp) { var n = p * se, d = n + (1 - p) * (1 - sp); return d > 0 ? n / d : NaN; }
@@ -259,6 +308,49 @@
     $('#chart-read').textContent = t('chartRead')(pctInt(P.p), fmtPct(cvp * 100), fmtPct(cvn * 100));
   }
 
+  /* ---------- appendix: formulas ---------- */
+  function frac(a, b) { return '<span class="frac"><span>' + a + '</span><span>' + b + '</span></span>'; }
+  function dec(x, d) { return x.toFixed(d).replace('.', t('decimal')); }
+  function renderAppendix() {
+    if (!document.getElementById('appendix-body')) return;   // older cached page without the appendix
+    var L = t('apx'), TP = L.symTP, TN = L.symTN, FP = 'FP', FN = 'FN', X = ' · ';
+    function eq(lhs, parts, say) { return '<p class="eq">' + (say ? '<span class="say">' + say + '</span>' : '') + '<span class="lhs">' + lhs + '</span>' + parts.map(function (q) { return '<span>=</span>' + q; }).join('') + '</p>'; }
+    function block(title, body, note, wide) { return '<div class="apx-block' + (wide ? ' wide' : '') + '"><h3>' + title + '</h3>' + body + (note ? '<p class="apx-note">' + note + '</p>' : '') + '</div>'; }
+    var P = 0.08, Se = 0.88, Sp = 0.85, N = 100;
+    var tp = N * P * Se, fn = N * P * (1 - Se), tn = N * (1 - P) * Sp, fp = N * (1 - P) * (1 - Sp);
+    var ppv = tp / (tp + fp), npv = tn / (tn + fn), lrp = Se / (1 - Sp), lrn = (1 - Se) / Sp, pre = P / (1 - P), post = pre * lrp;
+    var f = figures(8, 88, 85);
+    var h = '';
+    h += block(L.notation, '<dl class="apx-defs">' + L.defs.map(function (d) { return '<dt>' + d[0] + '</dt><dd>' + d[1] + '</dd>'; }).join('') + '</dl>');
+    h += block(L.cells,
+      eq('N<sub>+</sub>', ['N' + X + 'p'], L.withC) + eq('N<sub>−</sub>', ['N' + X + '(1 − p)'], L.withoutC) +
+      eq(TP, ['N' + X + 'p' + X + 'Se']) + eq(FN, ['N' + X + 'p' + X + '(1 − Se)']) +
+      eq(TN, ['N' + X + '(1 − p)' + X + 'Sp']) + eq(FP, ['N' + X + '(1 − p)' + X + '(1 − Sp)']));
+    h += block(L.props,
+      eq('Se', [frac(TP, TP + ' + ' + FN)], L.sens) + eq('Sp', [frac(TN, TN + ' + ' + FP)], L.spec) +
+      eq('1 − Sp', [frac(FP, FP + ' + ' + TN)], L.fpr) + eq('1 − Se', [frac(FN, TP + ' + ' + FN)], L.fnr) +
+      eq('p', [frac(TP + ' + ' + FN, 'N')], L.prev), L.propsNote);
+    h += block(L.pv,
+      eq('PPV', [frac(TP, TP + ' + ' + FP), frac('p' + X + 'Se', 'p' + X + 'Se + (1 − p)' + X + '(1 − Sp)')], L.ppv) +
+      eq('NPV', [frac(TN, TN + ' + ' + FN), frac('(1 − p)' + X + 'Sp', '(1 − p)' + X + 'Sp + p' + X + '(1 − Se)')], L.npv), L.pvNote);
+    h += block(L.odds,
+      eq('LR+', [frac('Se', '1 − Sp')], L.lrp) + eq('LR−', [frac('1 − Se', 'Sp')], L.lrn) +
+      eq(L.preW, [frac('p', '1 − p')], L.pre) + eq(L.postW, [L.preW + X + 'LR'], L.post) +
+      eq('P', [frac(L.oddsW, '1 + ' + L.oddsW)], L.back), L.oddsNote);
+    h += block(L.example,
+      eq(L.exGiven, ['N = 100, p = ' + dec(P, 2) + ', Se = ' + dec(Se, 2) + ', Sp = ' + dec(Sp, 2)]) +
+      eq(TP, ['100' + X + dec(P, 2) + X + dec(Se, 2), dec(tp, 2)]) + eq(FN, ['100' + X + dec(P, 2) + X + dec(1 - Se, 2), dec(fn, 2)]) +
+      eq(TN, ['100' + X + dec(1 - P, 2) + X + dec(Sp, 2), dec(tn, 2)]) + eq(FP, ['100' + X + dec(1 - P, 2) + X + dec(1 - Sp, 2), dec(fp, 2)]) +
+      eq('PPV', [frac(dec(tp, 2), dec(tp, 2) + ' + ' + dec(fp, 2)), '<b class="pos-c">' + dec(ppv * 100, 1) + t('pct') + '</b>']) +
+      eq('NPV', [frac(dec(tn, 2), dec(tn, 2) + ' + ' + dec(fn, 2)), '<b class="neg-c">' + dec(npv * 100, 1) + t('pct') + '</b>']) +
+      eq('LR+', [frac(dec(Se, 2), dec(1 - Sp, 2)), dec(lrp, 2)]) +
+      eq(L.postW, [dec(pre, 3) + X + dec(lrp, 2), dec(post, 3)]) +
+      eq('P', [frac(dec(post, 3), '1 + ' + dec(post, 3)), '<b class="pos-c">' + dec(post / (1 + post) * 100, 1) + t('pct') + '</b>']), null, true);
+    h += block(L.rounding, '<p class="apx-note" style="color:inherit;font-size:1rem">' +
+      L.roundingText(f.tp + ' / ' + f.pos + ' = ' + Math.round(100 * f.tp / f.pos) + t('pct'), dec(ppv * 100, 1) + t('pct')) + '</p>', null, true);
+    $('#appendix-body').innerHTML = h;
+  }
+
   /* ---------- text of all sections ---------- */
   function sectionOf(s) { return s <= 8 ? 'secArg' : s === 9 ? 'secPlay' : s === 10 ? 'secCurve' : 'secGame'; }
   function renderTexts() {
@@ -343,8 +435,8 @@
       var P9 = params(9), f9 = figures(P9.p, P9.se, P9.sp);
       $('#c-tp').textContent = f9.tp; $('#c-fn').textContent = f9.fn; $('#c-fp').textContent = f9.fp; $('#c-tn').textContent = f9.tn;
       $('#c-sick').textContent = f9.sick; $('#c-healthy').textContent = f9.healthy; $('#c-pos').textContent = f9.pos; $('#c-neg').textContent = f9.neg;
-      $('#f-ppv').innerHTML = f9.tp + ' / ' + f9.pos + ' = <span class="res">' + fmtPct(f9.ppv) + '</span>';
-      $('#f-npv').innerHTML = f9.tn + ' / ' + f9.neg + ' = <span class="res">' + fmtPct(f9.npv) + '</span>';
+      $('#f-ppv').innerHTML = '<span class="res">' + fmtPct(f9.ppv) + '</span> <span class="approx">(' + t('approxW') + ' ' + f9.tp + ' / ' + f9.pos + ')</span>';
+      $('#f-npv').innerHTML = '<span class="res">' + fmtPct(f9.npv) + '</span> <span class="approx">(' + t('approxW') + ' ' + f9.tn + ' / ' + f9.neg + ')</span>';
     }
   }
 
@@ -354,6 +446,7 @@
     $$('[data-i18n-html]').forEach(function (e) { e.innerHTML = t(e.dataset.i18nHtml); });
     $$('.lang-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === state.lang ? 'true' : 'false'); });
     var demos = $$('.legend .badge-demo'); if (demos[1]) demos[1].classList.add('neg');
+    renderAppendix();
   }
 
   /* ---------- scroll observer ---------- */
@@ -378,15 +471,17 @@
     pick();
   }
 
-  var SECTION_IDS = ['hero'].concat([1,2,3,4,5,6,7,8,9,10,11].map(function (n) { return 's' + n; }));
+  var SECTION_IDS = ['hero'].concat([1,2,3,4,5,6,7,8,9,10,11].map(function (n) { return 's' + n; })).concat(['appendix']);
   function currentIndex() {
     var y = window.scrollY + 61, cur = 0;
     SECTION_IDS.forEach(function (id, i) { if (document.getElementById(id).offsetTop - 60 <= y + 2) cur = i; });
     return cur;
   }
   function jump(delta) {
-    var target = SECTION_IDS[Math.max(0, Math.min(SECTION_IDS.length - 1, currentIndex() + delta))];
-    document.getElementById(target).scrollIntoView({ block: 'start' });
+    var cur = currentIndex(), next = Math.max(0, Math.min(SECTION_IDS.length - 1, cur + delta));
+    if (next === cur) return false;
+    document.getElementById(SECTION_IDS[next]).scrollIntoView({ block: 'start' });
+    return true;
   }
   /* one section per wheel gesture; free scrolling only inside a section taller than the viewport */
   var wheelLock = 0;
@@ -397,7 +492,8 @@
       var atEnd = e.deltaY > 0 ? pic.scrollTop + pic.clientHeight >= pic.scrollHeight - 2 : pic.scrollTop <= 1;
       if (!atEnd) return;
     }
-    var sec = document.getElementById(SECTION_IDS[currentIndex()]), r = sec.getBoundingClientRect();
+    var idx = currentIndex(), sec = document.getElementById(SECTION_IDS[idx]), r = sec.getBoundingClientRect();
+    if (e.deltaY > 0 && idx === SECTION_IDS.length - 1) return;   // last section: scroll freely to the end
     if (e.deltaY > 0 && r.bottom > window.innerHeight + 4) return;
     if (e.deltaY < 0 && r.top < 60 - 4) return;
     e.preventDefault();
