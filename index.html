@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What is a positive result worth? – Screening accuracy</title>
+  <link rel="preload" href="assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="person" viewBox="0 0 24 34"><circle cx="12" cy="6" r="5.2"/><path d="M2.5 33 V21 a9.5 9.5 0 0 1 19 0 V33 Z"/></symbol>
+  </svg>
+
+  <header class="bar">
+    <span class="bar-title" data-i18n="kicker">Screening accuracy</span>
+    <nav class="bar-nav">
+      <a href="#s1" data-i18n="navArg">The argument</a>
+      <a href="#s9" data-i18n="navPlay">Playground</a>
+      <a href="#s10" data-i18n="navCurve">The curves</a>
+      <a href="#s11" data-i18n="navGame">Game</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language / Sprache">
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="true" lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="de" aria-pressed="false" lang="de">DE</button>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <h1 data-i18n="title">What is a positive result worth?</h1>
+      <p class="hero-lead" data-i18n="heroLead">A screening test comes back positive. How likely is it that the person really has the condition? The answer depends far less on the test than most people think – and far more on who was tested.</p>
+      <p class="hero-journey" data-i18n="heroJourney">First the argument, in eight short steps with 100 people and one test. Then a playground, the full curves, and a game in which you guess the answer for six situations.</p>
+      <div class="hero-actions">
+        <a class="primary" href="#s1" data-i18n="heroStart">Read the argument</a>
+        <a class="secondary" href="#s11" data-i18n="heroGame">Jump to the game</a>
+      </div>
+      <p class="hero-hint" data-i18n="heroHint">or just scroll</p>
+    </div>
+  </section>
+
+  <main class="scrolly">
+    <div class="steps">
+      <section class="step" id="s1" data-step="1"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s2" data-step="2"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s3" data-step="3"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s4" data-step="4"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s5" data-step="5"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div>
+        <div class="guess" data-for="5">
+          <label class="guess-label" data-i18n="guessQ">Your estimate: how many of the positive results are real?</label>
+          <div class="guess-row"><input type="range" class="sl-guess" min="0" max="100" step="1" value="50" aria-label="Estimate"><output class="out-guess">50%</output></div>
+          <div class="zones" aria-hidden="true"><span data-i18n="zone1">hardly any</span><span data-i18n="zone2">a third</span><span data-i18n="zone3">two thirds</span><span data-i18n="zone4">nearly all</span></div>
+          <button type="button" class="primary go btn-reveal" data-i18n="reveal">Show me</button>
+        </div>
+        <p class="feedback" hidden></p>
+      </div></section>
+      <section class="step" id="s6" data-step="6"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s7" data-step="7"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s8" data-step="8"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div></div></section>
+      <section class="step" id="s9" data-step="9"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div>
+        <div class="controls" data-full="1">
+          <div class="presets">
+            <div class="preset-group"><span class="group-label" data-i18n="setting">Setting</span>
+              <button type="button" class="chip" data-preset="setting" data-key="population"><span data-i18n="population">General population</span><small>8%</small></button>
+              <button type="button" class="chip" data-preset="setting" data-key="gp"><span data-i18n="gp">GP practice</span><small>20%</small></button>
+              <button type="button" class="chip" data-preset="setting" data-key="practice"><span data-i18n="practice">Psychotherapy practice</span><small>50%</small></button></div>
+            <div class="preset-group"><span class="group-label" data-i18n="test">Test</span>
+              <button type="button" class="chip" data-preset="test" data-key="phq9"><span data-i18n="phq9">PHQ-9</span><small>88 / 85</small></button>
+              <button type="button" class="chip" data-preset="test" data-key="whooley"><span data-i18n="whooley">Two-question test</span><small>96 / 57</small></button>
+              <button type="button" class="chip" data-preset="test" data-key="ideal"><span data-i18n="ideal">Excellent test</span><small>95 / 95</small></button></div>
+          </div>
+          <div class="slider"><label><b data-i18n="prev">Prevalence</b> <span data-i18n="prevDesc">share who have the condition</span></label><div class="sl-row"><input type="range" class="sl-p" min="0" max="100" step="1" value="8"><output class="out-p">8%</output></div></div>
+          <div class="slider"><label><b data-i18n="sens">Sensitivity</b> <span data-i18n="sensDesc">share of the ill who test positive</span></label><div class="sl-row"><input type="range" class="sl-se" min="50" max="100" step="1" value="88"><output class="out-se">88%</output></div></div>
+          <div class="slider"><label><b data-i18n="spec">Specificity</b> <span data-i18n="specDesc">share of the healthy who test negative</span></label><div class="sl-row"><input type="range" class="sl-sp" min="50" max="100" step="1" value="85"><output class="out-sp">85%</output></div></div>
+        </div>
+      </div></section>
+      <section class="step" id="s10" data-step="10"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div>
+        <div class="controls">
+          <div class="presets">
+            <div class="preset-group"><span class="group-label" data-i18n="test">Test</span>
+              <button type="button" class="chip" data-preset="test" data-key="phq9"><span data-i18n="phq9">PHQ-9</span><small>88 / 85</small></button>
+              <button type="button" class="chip" data-preset="test" data-key="whooley"><span data-i18n="whooley">Two-question test</span><small>96 / 57</small></button>
+              <button type="button" class="chip" data-preset="test" data-key="ideal"><span data-i18n="ideal">Excellent test</span><small>95 / 95</small></button></div>
+          </div>
+          <div class="slider"><label><b data-i18n="prev">Prevalence</b> <span data-i18n="prevDesc">share who have the condition</span></label><div class="sl-row"><input type="range" class="sl-p" min="0" max="100" step="1" value="8"><output class="out-p">8%</output></div></div>
+        </div>
+      </div></section>
+      <section class="step" id="s11" data-step="11"><div class="step-inner"><p class="section-label"></p><h2 class="headline"></h2><div class="body"></div><div class="term" hidden></div>
+        <div class="round" id="round" hidden><p class="round-label" id="round-label"></p><p class="scenario" id="scenario"></p></div>
+        <div class="guess" data-for="11" hidden>
+          <label class="guess-label" data-i18n="guessQ">Your estimate: how many of the positive results are real?</label>
+          <div class="guess-row"><input type="range" class="sl-guess" min="0" max="100" step="1" value="50" aria-label="Estimate"><output class="out-guess">50%</output></div>
+          <div class="zones" aria-hidden="true"><span data-i18n="zone1">hardly any</span><span data-i18n="zone2">a third</span><span data-i18n="zone3">two thirds</span><span data-i18n="zone4">nearly all</span></div>
+          <button type="button" class="primary go btn-reveal" data-i18n="check">Check</button>
+        </div>
+        <p class="feedback" hidden></p>
+        <button type="button" class="primary" id="btn-round-next" hidden></button>
+        <div class="game-end" id="game-end" hidden><p class="big-stat" id="avg-miss"></p><p id="end-text"></p><button type="button" class="secondary" id="btn-again" data-i18n="again">Play again</button></div>
+      </div></section>
+    </div>
+
+    <aside class="picture-col">
+      <div class="picture" id="picture">
+        <p class="pic-pos" id="pic-pos"></p>
+        <div class="stage" id="stage">
+          <div class="group" id="g-left"><div class="cap"><span class="cap-n" id="cap-left-n"></span><span class="cap-l" id="cap-left-l"></span></div><div class="grid" id="grid-left"></div></div>
+          <div class="group" id="g-right"><div class="cap"><span class="cap-n" id="cap-right-n"></span><span class="cap-l" id="cap-right-l"></span></div><div class="grid" id="grid-right"></div></div>
+        </div>
+        <div class="result" id="result" hidden><span class="result-big" id="result-big"></span><span class="result-sub" id="result-sub"></span></div>
+        <div class="tiles" id="tiles" hidden></div>
+        <div class="chart" id="chart" hidden>
+          <div class="chart-toggle" id="chart-legend"></div>
+          <svg id="curve" viewBox="0 0 640 380" role="img" aria-label="PPV and NPV across prevalence"></svg>
+          <p class="chart-read" id="chart-read"></p>
+        </div>
+        <div class="table-wrap" id="table-wrap" hidden>
+          <table class="fourfold">
+            <thead><tr><th class="corner"></th><th class="col-head pos" data-i18n="testPos">Test positive</th><th class="col-head neg" data-i18n="testNeg">Test negative</th><th class="sum-head" data-i18n="sum">Total</th></tr></thead>
+            <tbody>
+              <tr><th class="row-head" data-i18n="rowSick">Depressed</th><td class="cell tp"><span class="cell-val" id="c-tp"></span><span class="cell-name" data-i18n="tpName">true positive</span></td><td class="cell fn"><span class="cell-val" id="c-fn"></span><span class="cell-name" data-i18n="fnName">false negative · missed</span></td><td class="sum" id="c-sick"></td></tr>
+              <tr><th class="row-head" data-i18n="rowHealthy">Not depressed</th><td class="cell fp"><span class="cell-val" id="c-fp"></span><span class="cell-name" data-i18n="fpName">false positive · false alarm</span></td><td class="cell tn"><span class="cell-val" id="c-tn"></span><span class="cell-name" data-i18n="tnName">true negative</span></td><td class="sum" id="c-healthy"></td></tr>
+              <tr class="sum-row"><th class="row-head" data-i18n="sum">Total</th><td class="sum" id="c-pos"></td><td class="sum" id="c-neg"></td><td class="sum total">100</td></tr>
+            </tbody>
+          </table>
+          <div class="formulas">
+            <p><b>PPV</b> = <span data-i18n="ppvF">true positives / all positive results</span> = <span id="f-ppv"></span></p>
+            <p><b>NPV</b> = <span data-i18n="npvF">true negatives / all negative results</span> = <span id="f-npv"></span></p>
+          </div>
+        </div>
+        <div class="legend" id="legend">
+          <span><svg class="glyph sick" aria-hidden="true"><use href="#person"/></svg><span data-i18n="legSick">has depression</span></span>
+          <span><svg class="glyph healthy" aria-hidden="true"><use href="#person"/></svg><span data-i18n="legHealthy">does not</span></span>
+          <span class="leg-badge"><span class="badge-demo">+</span><span data-i18n="legPlus">tests positive</span></span>
+          <span class="leg-badge"><span class="badge-demo neg">−</span><span data-i18n="legMinus">tests negative</span></span>
+          <span class="leg-note" data-i18n="rounded">whole people, rounded</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="foot"><p data-i18n-html="footer"></p></footer>
+  <script src="script.js"></script>
+</body>
+</html>
